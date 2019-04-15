@@ -1,0 +1,168 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    
+    <title>Image Attention</title>
+    <meta name="description" content="Measuring attention on images">
+    <meta name="author" content="Zoya Bylinskii and Anelise Newman" >
+    
+    <link rel="stylesheet" href="assets/lib/semantic/semantic.min.css">
+    <link rel="stylesheet" href="assets/css/overrides.css">
+    <script src="assets/lib/jquery/jquery-3.1.1.min.js"></script>
+    <script src="assets/lib/semantic/semantic.min.js"></script>
+    <script src="assets/js/custom.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/demo_survey.js"></script>
+</head>
+
+<body>
+<div class="ui container">
+    <h1 id="page-title" class="meta-title ui centered dividing header"></h1>
+    <div id="instructions" class="ui top aligned centered grid">
+        <div class="row">
+            <div class="left aligned fourteen wide column">
+                <h2>Instructions</h2>
+                <p><b class="meta-desc"></b></p>
+                <p class="instructions-simple"></p>
+                <h3>Guidelines:</h3>
+                <ol class="instructions-steps">
+                </ol>
+                <div id="sample-task">
+                    <h3>Sample task:</h3>
+                    <div id="instructions-demo"></div>
+                </div>
+                <div class="ui progress blue" id="im-load-progress">
+                    <div class="bar">
+                        <div class="progress"></div>
+                    </div>
+                    <div class="label">Loading images...</div>
+                </div>
+                <div class="ui primary button right floated instruction-button">Continue</div>
+            </div>
+        </div>
+    </div>
+    <div class="ui error message subtask" id="hit-not-accepted" style="display:none">You have not yet accepted this HIT. Please accept the HIT before you can see the rest of the task.</div>
+    <div id="succesful-submit" class="row" style="display: none; text-align:center">
+        <p class="ui header">Thank you for completing the task!</p>
+        <div style="background-color: lightgray; display: inline-block; align-items: center; padding: 20px; border-radius: 10px">
+            <p>MTurk submit code:</p>
+            <h1 class="ui header" id="submit-code"></h1>
+            <div id="copy-key-button" class="ui blue icon large button"><i class="copy icon"></i></div>
+        </div>
+    </div>
+    <div id="experiment" class="ui top aligned centered relaxed grid">
+        <div class="row">
+            <div class="sixteen wide column">
+                <div id="progress-bar" class="ui small olive progress">
+                    <div class="bar"></div>
+                    <div class="label"></div>
+                </div>
+            </div>
+        </div>
+        <!-- vv CUSTOM EXPERIMENT MARKUP GOES HERE vv -->
+        
+        <!-- putting all subtasks here as separate divs, while task code will toggle visibility of each one -->
+        
+        <div id="show-cross-subtask" class="subtask row"> <!-- one subtask visible at a time -->
+          <div class="row" id="show-cross">
+                <div class="img-box">
+                    <img id="img-cross" src="" class="img-main" />
+                </div>
+          </div>
+        </div>
+
+        <div id="show-image-subtask" class="subtask row"> <!-- one subtask visible at a time -->
+          <div class="row" id="show-image">
+                <div class="img-box">
+                    <img id="img-main" src="" class="img-main" />
+                </div>
+          </div>
+        </div>
+        
+        <div id="show-digits-subtask" class="subtask row"> 
+          <div class="row" id="show-digits">
+                <div class="img-box">
+                    <img id="img-digits" src="" class="img-main"/>
+                </div>      
+          </div>
+        </div>
+        <div id="remembered-char-subtask" class="subtask">
+            <div class="img-box ui middle aligned grid img-sized-container">
+                <div class="eight column wide">
+                    <h3 class="ui header">Please enter the character code you remember looking at last:</h3>
+
+                    <div class="ui form" id="letters-form">
+                        <div class="field">
+                            <div class="ui large input">
+                                <input id="remembered-char" type="text" size="75" maxlength="3" class="uppercase" > 
+                            </div>
+                        </div>
+                        <div class="ui error message"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="feedback-subtask" class="subtask row">
+            <div class="img-box ui middle aligned grid img-sized-container">
+                <div class="eight column wide">
+                    <div id ="feedback-message"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="accuracy-error-message" class="subtask row">
+            <div class="ui error message">We're sorry, but the rest of the task will not continue at this time. We are looking for high accuracy to proceed with the task. You may try again if you would like.</div>
+        </div>
+        
+        <!-- ^^ CUSTOM EXPERIMENT MARKUP GOES HERE ^^ -->
+        <div id="demo-survey" class ="ui top aligned centered grid"></div>
+        <div class="middle aligned row">
+            <div class="eight wide column">
+                <div id="message-field" class="field">
+                </div>
+            </div>
+            <div class="eight wide column">
+                <div id="button-row" class="field">
+                    <div id="next-button" class="ui primary right floated button">Next</div>
+
+                    <!-- NOTE: disabling previous and instructions buttons for the current task for which we're controlling the flow -->
+                    
+                    <!--div id="prev-button" class="ui primary right floated button">Prev</div-->
+                    <!--div class="ui button right floated instruction-button">Show instructions</div-->
+                </div>
+            </div>
+        </div>
+        <div class="top aligned row">
+            <div class="eight wide column"></div>
+            <div class="right aligned eight wide column">
+                <div id="final-task-fields" class="ui form">
+                    <div id="feedback-field" class="field">
+                        <label>
+                            Any comments or feedback?
+                        </label>
+                        <textarea id="feedback-input" rows="2"></textarea>
+                    </div>
+                    <div id="submit-field" class="field">
+                        <div id="submit-button" class="ui green right floated button">Submit</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <form id="submit-form" name="submit-form">
+            </form>
+        </div>
+    </div>
+    <div id="disclaimer" class="ui top aligned centered relaxed grid">
+        <div class="row">
+            <div id="disclaimer-box" class="center aligned fourteen wide column">
+                <div class="ui divider"></div>
+                <p class="disclaimer-text"></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

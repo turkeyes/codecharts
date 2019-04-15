@@ -1,0 +1,24 @@
+{
+    "meta": {
+        "title": "Image Attention",
+        "description": "Look at a series of images and record what code you see.",
+        "disclaimer": "Your participation in this research is voluntary. You may decline further participation, at any time, without adverse consequences. Your anonymity is assured; the researchers who have requested your participation will not receive any personal information about you."
+    },
+    "instructions": {
+        "simple": "Record the three-character code you see after an image is shown.",
+        "steps": [
+            "You will be shown an image for a couple of seconds.",
+            "You will then briefly be shown a chart of three-character codes.",
+            "You will be asked to record what three-letter code you saw when the image disappeared.", 
+            "Some images will contain just a single black-and-white image of a face. For these images, follow the face with your eyes and input the code that appears in the same spot as the face.",
+            "This process will repeat several times."
+        ],
+        "images": ["demo_face_sentinels.gif"]
+    },
+    "advanced": {
+        "includeDemographicSurvey": true,
+        "hideIfNotAccepted": true,
+        "externalSubmit": false,
+        "externalSubmitUrl": ""
+    }
+}
