@@ -401,7 +401,7 @@ function preloadImages(data) {
 
     // Once you have loaded the images and know the size, set the correct display dimensions.
     // Assumes all images have the same height/width 
-    var shouldConstrainHeight = IMAGES[10].height/IMAGES[10].width > PARAMS.IMG_HEIGHT/PARAMS.IMG_WIDTH;
+    var shouldConstrainHeight = IMAGES[0].height/IMAGES[0].width > PARAMS.IMG_HEIGHT/PARAMS.IMG_WIDTH;
     if (shouldConstrainHeight) {
       $(".img-box").height(PARAMS.IMG_HEIGHT);
     } else {
