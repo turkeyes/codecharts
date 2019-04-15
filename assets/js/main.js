@@ -181,14 +181,17 @@ function submitHIT() {
         'results': results
     }
 
-    var submitUrl;
-    if (config.advanced.externalSubmit) {
-        submitUrl = config.advanced.externalSubmitUrl;
-        externalSubmit(submitUrl, payload);
-    } else {
-        submitUrl = decodeURIComponent(gup("turkSubmitTo")) + "/mturk/externalSubmit";
-        mturkSubmit(submitUrl, payload);
-    }
+    // var submitUrl;
+    // if (config.advanced.externalSubmit) {
+    //     submitUrl = config.advanced.externalSubmitUrl;
+    //     externalSubmit(submitUrl, payload);
+    // } else {
+    //     submitUrl = decodeURIComponent(gup("turkSubmitTo")) + "/mturk/externalSubmit";
+    //     mturkSubmit(submitUrl, payload);
+    // }
+
+    // start an automatic download of the answers 
+    downloadAnswers(payload);
 }
 
 function cancelSubmit(err) {
@@ -334,6 +337,10 @@ function externalSubmit(submitUrl, results) {
         key = "mturk_key_" + state.workerId + "_" + state.assignmentId;
         showSubmitKey(key);
     })
+}
+
+function downloadAnswers(payload) {
+    
 }
 
 /* MAIN */
