@@ -1,5 +1,5 @@
 
-/* Parameters of the UI ************************************************************/
+/* UI Parameters *******************************************************************/
 
 const PARAMS = {
   ENABLE_MSEC_SET_URL: false, // enables setting image display time in the url like so: '?msecImg=1000'
@@ -30,7 +30,7 @@ const DATA_BASE_PATH = "assets/task_data/";
 // base path relative to which image paths are defined
 const IMAGE_BASE_PATH = "assets/"
 const SUBJECT_FILES_BASE_PATH = DATA_BASE_PATH + "full_subject_files/";
-const FIXATION_CROSS = "assets/task_data/fixation-cross.jpg"
+const FIXATION_CROSS = DATA_BASE_PATH + "fixation-cross.jpg"
 
 /* Global vars **********************************************************************/
 
