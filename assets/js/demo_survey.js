@@ -78,7 +78,7 @@ var demoSurvey = {
 	    var ethnicity = $("input[type=checkbox][name=ethnicity]:checked").val();
 	    var education = $("input[type=radio][name=education]:checked").val();
 	    var vizExperience = $("input[type=radio][name=vizExperience]:checked").val();
-	    var feedback = $("textarea[name=feedback]").val();
+	    var feedback = htmlEscape($("textarea[name=feedback]").val());
 
 	    var data = {
 	        gender: gender,
@@ -102,4 +102,14 @@ var demoSurvey = {
 		}
 		return false;
 	}
+}
+
+function htmlEscape(str) {
+  /* Html-escape a sensitive string. */
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
