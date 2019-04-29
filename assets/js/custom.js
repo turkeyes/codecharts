@@ -5,27 +5,27 @@ const PARAMS = {
   ENABLE_MSEC_SET_URL: false, // enables setting image display time in the url like so: '?msecImg=1000'
   NUM_MSEC_CROSS: 750, // how long the fixation cross is shown for
   NUM_MSEC_IMAGE: 2000, // num milliseconds to show each image for
-  NUM_MSEC_SENTINEL: 750, // how long a sentinel image is shown for 
+  NUM_MSEC_SENTINEL: 750, // how long a sentinel image is shown for
   NUM_MSEC_CHAR: 400, // how long the code chart is shown
 
   IMG_WIDTH: 1000 , // max img width
   IMG_HEIGHT: 700 , // max img height
 
   N_BUCKETS: 1,
-  N_SUBJ_FILES: 10,
+  N_SUBJ_FILES: 3,
 
-  MAX_INVALID_ALLOWED_TUTORIAL: 1, 
+  MAX_INVALID_ALLOWED_TUTORIAL: 1,
   MAX_INCORRECT_SENTINELS_ALLOWED_TUTORIAL: 0,
 
   GIVE_FEEDBACK: false, // should feedback be given during the tutorial
   NUM_MSEC_FEEDBACK: 2000, // how long does the feedback stay on the screen
 }
 
-// messages shown if feedback is given 
+// messages shown if feedback is given
 const POSITIVE_MESSAGE = "Keep up the good work!";
 const NEGATIVE_MESSAGE = "Please type the triplet you see when the image vanishes.";
 
-// path to the task data to use 
+// path to the task data to use
 const DATA_BASE_PATH = "assets/task_data/";
 // base path relative to which image paths are defined
 const IMAGE_BASE_PATH = "assets/"
@@ -38,13 +38,13 @@ const FIXATION_CROSS = DATA_BASE_PATH + "fixation-cross.jpg"
 var SUBJ_ID;
 var BUCKET_NUM;
 var SUBJ_FILE_PATH;
-var OPEN_TIME; // when the url is first loaded 
+var OPEN_TIME; // when the url is first loaded
 var START_TIME; // when they first click the "continue" button
 var LOAD_TIME; // when the last image loads and the task is ready to go
 
-// normal images 
+// normal images
 var IMAGES = new Array(); // preload the images
-// character code images 
+// character code images
 var CHAR_IMAGES = new Array();
 
 var CHECKED_TUTORIAL_FLAG = false;
@@ -53,7 +53,7 @@ var MESSAGE = "";
 var MESSAGE_IS_POSITIVE = true;
 
 // during the task, keeps track of how the participant is doing
-// this count is only valid up until you hit the submit button 
+// this count is only valid up until you hit the submit button
 var SCORES = {
   SENTINEL_CORRECT: 0,
   SENTINEL_TOTAL: 0,
@@ -66,13 +66,13 @@ var SCORES = {
 
 var custom = {
   loadTasks: function() {
-    
+
     /*
-     * Loads data needed to run the task and does some one-time setup, such as: 
+     * Loads data needed to run the task and does some one-time setup, such as:
      *  - timestamping the start of the task
-     *  - selecting a subject file to use and loading it 
-     *  - preloading images 
-     * 
+     *  - selecting a subject file to use and loading it
+     *  - preloading images
+     *
      * returns [obj, int]: A length-two list where the first element is the loaded task data
      *  and the second element is the number of trails (number of images) in the task.
      */
@@ -84,9 +84,9 @@ var custom = {
       START_TIME = new Date();
       $(this).unbind();
     })
-     
+
      //hide all subtasks to begin with
-    $(".subtask").hide();         
+    $(".subtask").hide();
 
     // set the size of the images
     $("img.img-main").css({
@@ -94,7 +94,7 @@ var custom = {
       "height": "100%",
       "objectFit": "contain"
     });
-     
+
     BUCKET_NUM = gupOrRandom("bucket", PARAMS.N_BUCKETS);
     SUBJ_ID = gupOrRandom("subj", PARAMS.N_SUBJ_FILES);
     console.log("Bucket", BUCKET_NUM, "subjId", SUBJ_ID);
@@ -123,9 +123,9 @@ var custom = {
 
       return [tasks, tasks.length];
     });
-    
+
   },
-  
+
   showTask: function(taskInput, taskIndex, taskOutput) {
     /*
      * Shows the next trial of the experiment (fix cross, image, code chart, and character input.)
@@ -133,7 +133,7 @@ var custom = {
      * taskInput - the task data returned from loadTasks
      * taskIndex - the number of the current subtask (image)
      * taskOutput - a partially filled out object containing the results (so far) of the task.
-     * 
+     *
      * returns: None
      */
     var nMsecFeedback = (PARAMS.GIVE_FEEDBACK && MESSAGE && IS_TUTORIAL) ? PARAMS.NUM_MSEC_FEEDBACK : 0;
@@ -147,9 +147,9 @@ var custom = {
       }
     }
 
-    $(".subtask").hide(); 
+    $(".subtask").hide();
     $('#next-button').hide(); // Hide the next button; we will handle control flow for this task
-      
+
     hideIfNotAccepted();
 
     if (nMsecFeedback > 0) {
@@ -157,14 +157,14 @@ var custom = {
       feedbackMessageElt.empty();
       feedbackMessageElt.append('<div class="ui message ' + messageClass + '"><div class="header">' + MESSAGE + '</div></div>');
       $("#feedback-subtask").show();
-    } 
+    }
     setTimeout(showFixationCross.bind(this, taskInput, taskIndex, taskOutput), nMsecFeedback);
-    
+
   },
-  
+
   collectData: function(taskInput, taskIndex, taskOutput) {
-    /* 
-     * Records the experimental output for the current subtask (image). 
+    /*
+     * Records the experimental output for the current subtask (image).
      *
      * taskInput - the task data returned from loadTasks
      * taskIndex - the number of the current subtask (image)
@@ -181,28 +181,28 @@ var custom = {
       isValidCode: isValidCode,
       coordinate: coord
     };
-     
+
      return taskOutput;
   },
-  
-  validateTask: function(taskInput, taskIndex, taskOutput) { 
+
+  validateTask: function(taskInput, taskIndex, taskOutput) {
     /*
-     * Reports whether the data corresponding to the current 
+     * Reports whether the data corresponding to the current
      * subtask (image) is valid (e.g. fully filled out)
      *
      * taskInput - the task data returned from loadTasks
      * taskIndex - the number of the current subtask (image)
      * taskOutput - a partially filled out object containing the results (so far) of the task.
-     * 
-     * returns: falsey value if validation passed for the taskIndex-th subjtask. 
+     *
+     * returns: falsey value if validation passed for the taskIndex-th subjtask.
      *  Truthy value if validation failed. To display a specific error message,
      *  return an object of the form {errorMessage: ""}
-     */       
-    var res = $('#letters-form').form('is valid'); 
-     
+     */
+    var res = $('#letters-form').form('is valid');
+
     if (!res) {
       return {errorMessage: "Please enter a valid code (an upper-case letter followed by 2 numbers)."};
-    } 
+    }
 
     // keep track of scores
     var validCode = taskOutput[taskIndex].isValidCode;
@@ -224,7 +224,7 @@ var custom = {
     MESSAGE_IS_POSITIVE = correctTrial;
 
     return false; // we'll allow the task to continue either way but we'll remember if an invalid code was entered
-  }, 
+  },
 
   getPayload: function(taskInputs, taskOutputs) {
     /*
@@ -232,7 +232,7 @@ var custom = {
      *
      * taskInput - the task data returned from loadTasks
      * taskOutput - a fully filled out object containing the results of the task.
-     * 
+     *
      * returns: all the data you want to be stored from the task.
      */
 
@@ -264,13 +264,13 @@ var custom = {
       timeToCompleteFromStartMsec: endTime - START_TIME
     }
 
-    // put the survey data under a separate key 
+    // put the survey data under a separate key
     var surveyData = taskOutputs.survey_data;
     delete taskOutputs.survey_data;
 
     // task outputs to store, including timing data
     var outputs = {
-      timing: timing, 
+      timing: timing,
       surveyData: surveyData,
       tasks: taskOutputs
     }
@@ -281,14 +281,14 @@ var custom = {
     }
 
   }
-  
+
 };
 
 function passedTutorial() {
   /* Returns false if the subject has failed the tutorial, else true.*/
-  var failedValidCheck = SCORES.INVALID > PARAMS.MAX_INVALID_ALLOWED_TUTORIAL; 
+  var failedValidCheck = SCORES.INVALID > PARAMS.MAX_INVALID_ALLOWED_TUTORIAL;
   var failedSentinelCheck = (SCORES.SENTINEL_TOTAL - SCORES.SENTINEL_CORRECT) > PARAMS.MAX_INCORRECT_SENTINELS_ALLOWED_TUTORIAL;
-    // check accuracy 
+    // check accuracy
   if (failedValidCheck || failedSentinelCheck) {
     $('.subtask').hide();
     $('#next-button').hide();
@@ -301,7 +301,7 @@ function passedTutorial() {
 function showFixationCross(taskInput, taskIndex, taskOutput) {
   /* Displays the fixation cross on the screen and queues the next target image. */
   $('.subtask').hide();
-  $("#show-cross-subtask").show();  
+  $("#show-cross-subtask").show();
   setTimeout(showImage.bind(this, taskInput, taskIndex, taskOutput), PARAMS.NUM_MSEC_CROSS);
 }
 
@@ -309,30 +309,30 @@ function showImage(taskInput, taskIndex, taskOutput) {
   /* Displays a target image on the screen and queues the corresponding code chart. */
   $('.subtask').hide();
   var imgFile = IMAGES[taskIndex].src;
-  $("#img-main").attr("src", imgFile);  
+  $("#img-main").attr("src", imgFile);
   $("#show-image-subtask").show();
-  
+
   var nSecs = isSentinel(taskInput[taskIndex]) ? PARAMS.NUM_MSEC_SENTINEL : PARAMS.NUM_MSEC_IMAGE;
-  setTimeout(function(){ showDigits(taskInput, taskIndex, taskOutput); }, nSecs); 
+  setTimeout(function(){ showDigits(taskInput, taskIndex, taskOutput); }, nSecs);
 }
 
 function showDigits(taskInput, taskIndex, taskOutput) {
-  /* Displays a code chart and queues the code entry. */ 
-  
+  /* Displays a code chart and queues the code entry. */
+
     // hide all except the relevant sub-task:
-    $(".subtask").hide();   
-    $("#show-digits-subtask").show();    
-         
+    $(".subtask").hide();
+    $("#show-digits-subtask").show();
+
     var digitsFile = CHAR_IMAGES[taskIndex].src;
-    $("#img-digits").attr("src", digitsFile)  
-    
+    $("#img-digits").attr("src", digitsFile)
+
     // run charEntry after NUM_MSEC_CHAR seconds elapse
     setTimeout(function(){ charEntry(taskInput, taskIndex, taskOutput); }, PARAMS.NUM_MSEC_CHAR); // show character chart for NUM_MSEC_CHAR, then switch to manual entry
- 
+
 };
 
-function charEntry(taskInput, taskIndex, taskOutput) {  
-  /* Displays and sets up the form to input the character code that was seen. */ 
+function charEntry(taskInput, taskIndex, taskOutput) {
+  /* Displays and sets up the form to input the character code that was seen. */
   $('#letters-form').form('reset');
   $("#remembered-char").val('');
 
@@ -340,26 +340,26 @@ function charEntry(taskInput, taskIndex, taskOutput) {
   $(".img-sized-container").height(Math.max($("#img-digits").height(), 100));
 
   // hide all except the relevant sub-task:
-  $(".subtask").hide();   
+  $(".subtask").hide();
   $('#remembered-char-subtask').show();
-      
+
    $('#letters-form').form({
           fields: {
             answer: {
-              identifier: 'remembered-char', 
-              rules: [ 
+              identifier: 'remembered-char',
+              rules: [
               {
-                type: 'minCount[1]', 
+                type: 'minCount[1]',
                 prompt: 'Please enter a code.'
-              }, 
+              },
               {
-                type: 'exactLength[3]', 
+                type: 'exactLength[3]',
                 prompt: 'A valid code is composed of 3 characters.'
               }, // the form input maxlength already guarantees entry will be at most 3 characters long
               {
                 type: 'regExp[/^[A-Za-z0-9\ ]*$/]',
                 prompt: 'A valid code should only contain letters and numbers.'
-              } 
+              }
               ]
             }
           }
@@ -370,37 +370,37 @@ function charEntry(taskInput, taskIndex, taskOutput) {
 
   // Hand back control to the user: show the next button (but not the back button)
   $('#next-button').show();
-        
+
 };
 
 function preloadImages(data) {
-  /* 
-   * Loads all images for the task so they are ready to go when the user starts. 
-   * 
-   * Shows a progress bar and disables the button to start the task until all 
-   * images are loaded. 
-   * 
-   * data: task data loaded from a subject file. 
+  /*
+   * Loads all images for the task so they are ready to go when the user starts.
+   *
+   * Shows a progress bar and disables the button to start the task until all
+   * images are loaded.
+   *
+   * data: task data loaded from a subject file.
    */
   var continueButton = $(".instruction-button");
   _disable(continueButton);
 
-  var cross = new Image(); // fixation cross image 
+  var cross = new Image(); // fixation cross image
 
-  // populates arrays to store the Image elements 
+  // populates arrays to store the Image elements
   data.forEach(function(elt, i) {
     IMAGES.push(new Image());
     CHAR_IMAGES.push(new Image());
   });
 
 
-  // callback for when all images have loaded 
+  // callback for when all images have loaded
   var imLoadCallback = function() {
     console.log("done loading");
     _enable(continueButton);
 
     // Once you have loaded the images and know the size, set the correct display dimensions.
-    // Assumes all images have the same height/width 
+    // Assumes all images have the same height/width
     var shouldConstrainHeight = IMAGES[0].height/IMAGES[0].width > PARAMS.IMG_HEIGHT/PARAMS.IMG_WIDTH;
     if (shouldConstrainHeight) {
       $(".img-box").height(PARAMS.IMG_HEIGHT);
@@ -415,8 +415,8 @@ function preloadImages(data) {
   }
   onAllImagesLoaded(IMAGES.concat(CHAR_IMAGES).concat([cross]), imProgressCallback, imLoadCallback);
 
-  // start images loading 
-  cross.src = FIXATION_CROSS; 
+  // start images loading
+  cross.src = FIXATION_CROSS;
   $("#img-cross").attr("src", FIXATION_CROSS);
   data.forEach(function(elt, i) {
     IMAGES[i].src = IMAGE_BASE_PATH + elt.image;
@@ -426,7 +426,7 @@ function preloadImages(data) {
 }
 
 function gupOrRandom(name, num) {
-  /* Returns the value for the key `name` in the querystring if it exists, 
+  /* Returns the value for the key `name` in the querystring if it exists,
    * else an int n s.t. 0 <= n < num. */
   var qs = gup(name);
   return qs.length > 0 ? parseInt(qs) : Math.floor(Math.random()*num);
@@ -443,39 +443,39 @@ function gup(name) {
 }
 
 function clickButtonOnEnter(inputElt, buttonToClick) {
-  /* Set up a binding between the enter key and a specific button. 
-   * 
-   * If the user enters the enter key into `inputElt`, `buttonToClick` 
-   * will be clicked. 
+  /* Set up a binding between the enter key and a specific button.
+   *
+   * If the user enters the enter key into `inputElt`, `buttonToClick`
+   * will be clicked.
    */
   inputElt.unbind();
   inputElt.focus();
 
   // wait a little bit before re-adding the callback, otherwise
-  // the callback could fire twice 
-  setTimeout(function() {   
+  // the callback could fire twice
+  setTimeout(function() {
       inputElt.keyup(function(event) {
         if (event.keyCode === 13) { // 13 is the enter key
           buttonToClick.click();
         }
-      }); 
+      });
   }, 500);
 }
 
 function onAllImagesLoaded(imgs, progressCallback, callback) {
-  /* 
+  /*
    * Registers callbacks for when certain images are fully and partially loaded.
-   * 
+   *
    * This must be called BEFORE setting the `src` elements on imgs are set,
-   * else the callback could be lost. 
-   * 
+   * else the callback could be lost.
+   *
    * imgs: an array of Image objects to watch. They should not have already started
-   * loading, i.e. the `src` attribute should not yet be set. 
-   * progressCallback: Callback to be called every time an image loads. Takes two args: 
+   * loading, i.e. the `src` attribute should not yet be set.
+   * progressCallback: Callback to be called every time an image loads. Takes two args:
    * the first is the number of images that have already loaded, the second is the total
-   * number of images that will be loaded. 
+   * number of images that will be loaded.
    * callback: Callback to be called when all images are loaded. Takes no args.
-   * 
+   *
    * returns: null
    */
   var imsToLoad = imgs.length;
@@ -492,7 +492,7 @@ function onAllImagesLoaded(imgs, progressCallback, callback) {
   }
 
   var successHandler = function() {
-    console.log("loaded an image"); 
+    console.log("loaded an image");
     incrementProgress();
   }
 
