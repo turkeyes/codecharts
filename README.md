@@ -16,11 +16,7 @@ Using the interface for your own data collection requires two steps: 1) generati
 
 ### Preparing the task data
 
-The CodeCharts interface expects input task data in a specific format. We have provided code that takes in a folder of target images and a few other parameters and outputs the data expected by the CodeCharts interface. To generate the input data, do the following: 
-
-1. TODO
-2. TODO
-3. TODO
+The CodeCharts interface expects input task data in a specific format. We have provided code that takes in a folder of target images and a few other parameters and outputs the data expected by the CodeCharts interface. To generate the input data, see the Jupyter notebook `generate-experiment-files/main.ipynb`. 
 
 ### Configuring the webpage
 
