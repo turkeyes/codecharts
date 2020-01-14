@@ -1,26 +1,29 @@
 # CodeCharts
 
-A scalable, natural alternative to eye-tracking. 
+A scalable, natural alternative to eye-tracking that can be deployed as a crowdsourced task. It uses a self-report methodology to determine where on an image a participant was looking. 
+
+A running web demo of this interface is available here: http://turkeyes.mit.edu/codecharts/
+
+If you use this code, please consider citing:
+
+> Newman, A., McNamara, B., Fosco, C., Zhang, Y.B., Sukhum, P., Tancik, M., Kim, N.W., Bylinskii, Z. TurkEyes: A Web-Based Toolbox for Crowdsourcing Attention Data. In ACM CHI, 2020.
+
+> Rudoy, D., Goldman, D. B., Shechtman, E., & Zelnik-Manor, L. Crowdsourcing gaze data collection. In Proc. Collective Intelligence, 2012.
 
 ## Getting started
 
-You can test the interface by running a local http server of your choice. For instance: 
+1. Clone this repository. All the experimental files have been pre-generated for a sample task in [assets/task_data](https://github.com/turkeyes/codecharts/tree/master/assets/task_data). 
+2. To test the interface with this sample task, change to the main repo directory where the index.html file is located, and run a local http server of your choice, i.e., run this command in your terminal:
 
 `python3 -m http.server`
-
-We have configured the interface with some pre-prepared images and code charts so that you can see how it works. 
 
 ## Testing on your own data
 
 Using the interface for your own data collection requires two steps: 1) generating input data to the interface and 2) configuring the webpage to your needs. 
 
-### Preparing the task data
+### Generating input data
 
-The CodeCharts interface expects input task data in a specific format. We have provided code that takes in a folder of target images and a few other parameters and outputs the data expected by the CodeCharts interface. To generate the input data, do the following: 
-
-1. TODO
-2. TODO
-3. TODO
+The iPython notebook found at [main.ipynb](https://github.com/turkeyes/codecharts/blob/master/generate-experiment-files/main.ipynb) should walk you step-by-step through generating all the experimental files required to run the CodeCharts interface with a new set of images. You will provide the path to the directory hosting these images and be able to further customize the experimental design (choosing the tutorial and sentinel images, the experiment length, and the number of subject files to generate). The code will output all the files to [assets/task_data](https://github.com/turkeyes/codecharts/tree/master/assets/task_data), and you can test the interface with the new images by repeating step 2 (from "Getting started"). Each time the page is refereshed, a new subject file will be preloaded. 
 
 ### Configuring the webpage
 
