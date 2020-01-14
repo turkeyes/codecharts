@@ -17,6 +17,7 @@ def generate_tutorials(tutorial_image_dir,rootdir,image_width,image_height,borde
     tutorial_images = []
     for ext in ('*.jpeg', '*.png', '*.jpg'):
         tutorial_images.extend(glob.glob(os.path.join(tutorial_image_dir, ext)))
+    print('A total of %d images will be sampled from for the tutorials.'%(len(tutorial_images)))
         
     tutorial_CC_dir = os.path.join(rootdir,'tutorial_CC')
     if not os.path.exists(tutorial_CC_dir):
@@ -38,6 +39,8 @@ def generate_tutorials(tutorial_image_dir,rootdir,image_width,image_height,borde
                                       'flag':'tutorial_real','codechart_file':codechart_filename}
 
     # now generate sentinel images (also N) with their corresponding codecharts  
+    print('Populating %s with %d sentinel images'%(tutorial_sentinel_dir,N_sent))
+    print('Populating %s with %d corresponding codecharts'%(tutorial_CC_dir,N_sent))
     for img_num in range(N_sent):
         codechart_filename = os.path.join(tutorial_CC_dir,'tutorial_sentinel_CC_%d.jpg'%(img_num))
         sentinel_filename = os.path.join(tutorial_sentinel_dir,'tutorial_sentinel_%d.jpg'%(img_num))
@@ -52,9 +55,11 @@ def generate_tutorials(tutorial_image_dir,rootdir,image_width,image_height,borde
 
     with open(os.path.join(rootdir,'tutorial.json'), 'w') as outfile: 
         json.dump(data, outfile)
+    print('Writing out %s'%(os.path.join(rootdir,'tutorial.json')))
 
     with open(os.path.join(rootdir,'tutorial_full.json'), 'w') as outfile: 
         json.dump(data_with_coords, outfile)
+    print('Writing out %s'%(os.path.join(rootdir,'tutorial_full.json')))
 
     
 if __name__ == "__main__":

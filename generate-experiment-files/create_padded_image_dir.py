@@ -19,8 +19,8 @@ def get_max_dims(allfiles):
         widths.append(width)
         heights.append(height)
 
-    print("Image widths:",Counter(widths).keys())
-    print("Image heights:",Counter(heights).keys())
+    #print("Image widths:",Counter(widths).keys())
+    #print("Image heights:",Counter(heights).keys())
 
     maxwidth = max(list(Counter(widths).keys()))
     maxheight = max(list(Counter(heights).keys()))

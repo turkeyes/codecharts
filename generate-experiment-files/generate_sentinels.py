@@ -105,6 +105,8 @@ def generate_sentinels(sentinel_image_dir,sentinel_CC_dir,num_buckets,start_buck
         data = {} # save to a json the filename, the coordinate of the + cross, and the triplet at that coordinate
         data_with_coords = {} # also save a list of other valid triplets and coordinates (for analysis)
 
+        print('Populating %s with %d sentinel images'%(image_bucket_dir,sentinel_images_per_bucket))
+        print('Populating %s with %d corresponding codecharts'%(CC_bucket_dir,sentinel_images_per_bucket))
         for i in range(sentinel_images_per_bucket):
             img_num = img_num_offset + b*sentinel_images_per_bucket + i + 1
             # generate random code chart
@@ -118,10 +120,11 @@ def generate_sentinels(sentinel_image_dir,sentinel_CC_dir,num_buckets,start_buck
 
         with open(os.path.join(image_bucket_dir,'sentinel_codes.json'), 'w') as outfile: 
             json.dump(data, outfile)
+        print('Writing out %s'%(os.path.join(image_bucket_dir,'sentinel_codes.json')))
 
         with open(os.path.join(image_bucket_dir,'sentinel_codes_full.json'), 'w') as outfile: 
             json.dump(data_with_coords, outfile)
-    
+        print('Writing out %s'%(os.path.join(image_bucket_dir,'sentinel_codes_full.json')))
 
 
 if __name__ == "__main__":
