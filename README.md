@@ -6,9 +6,9 @@ A running web demo of this interface is available here: http://turkeyes.mit.edu/
 
 If you use this code, please consider citing:
 
-> Newman, A., McNamara, B., Fosco, C., Zhang, Y.B., Sukhum, P., Tancik, M., Kim, N.W., Bylinskii, Z. TurkEyes: A Web-Based Toolbox for Crowdsourcing Attention Data. In ACM CHI, 2020.
+> Newman, A., McNamara, B., Fosco, C., Zhang, Y.B., Sukhum, P., Tancik, M., Kim, N.W., Bylinskii, Z. [TurkEyes: A Web-Based Toolbox for Crowdsourcing Attention Data.](http://turkeyes.mit.edu/) In ACM CHI, 2020.
 
-> Rudoy, D., Goldman, D. B., Shechtman, E., & Zelnik-Manor, L. Crowdsourcing gaze data collection. In Proc. Collective Intelligence, 2012.
+> Rudoy, D., Goldman, D. B., Shechtman, E., & Zelnik-Manor, L. [Crowdsourcing gaze data collection.](https://arxiv.org/abs/1204.3367) In Proc. Collective Intelligence, 2012.
 
 ## Getting started
 
