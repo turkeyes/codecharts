@@ -17,7 +17,9 @@ If you use this code, please consider citing:
 
 `python3 -m http.server`
 
-3. Take your web browser to http://localhost:8000/ and try the task! (Note: data will not be submitted)
+3. Take your web browser to http://localhost:8000/ and try the task! 
+
+Note: data will not be submitted anywhere. The task needs to be configured to run with a backend or a crowdsourcing platform that offers a backend like Amazon's Mechanical Turk (MTurk). Please see https://github.com/a-newman/mturk-api-notebook for an example of how to deploy the task on MTurk once all the experimental files have been hosted on a public webpage. Alternatively, the https://github.com/turkeyes/codecharts/tree/print_data branch of this repository contains a version that downloads the collected data from the task to a local file. You can use this to test your task before launching it with a backend, or you can use this as-is to collect data with local participants without hosting a backend.
 
 ## Testing on your own data
 
