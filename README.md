@@ -17,7 +17,7 @@ If you use this code, please consider citing:
 
 `python3 -m http.server`
 
-3. Take your web browser to localhost:8000 and try the task! (Note: data will not be submitted)
+3. Take your web browser to http://localhost:8000/ and try the task! (Note: data will not be submitted)
 
 ## Testing on your own data
 
