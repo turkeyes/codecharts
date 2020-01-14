@@ -17,6 +17,8 @@ If you use this code, please consider citing:
 
 `python3 -m http.server`
 
+3. Take your web browser to localhost:8000 and try the task! (Note: data will not be submitted)
+
 ## Testing on your own data
 
 Using the interface for your own data collection requires two steps: 1) generating input data to the interface and 2) configuring the webpage to your needs. 
