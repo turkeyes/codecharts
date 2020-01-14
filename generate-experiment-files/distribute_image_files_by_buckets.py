@@ -13,10 +13,12 @@ def distribute_images(from_dir,real_image_dir,num_buckets,start_bucket_at):
     random.shuffle(img_files) # shuffle all images randomly at start 
     images_per_bucket = int(len(img_files)/float(num_buckets))
 
+    print('Distributing images across %d buckets'%(num_buckets))
     for b in range(num_buckets):
         bucket_dir = os.path.join(real_image_dir,'bucket%d'%(start_bucket_at+b))
         if not os.path.exists(bucket_dir):
             os.makedirs(bucket_dir)
+        print('Populating %s/bucket%d with %d images'%(real_image_dir,start_bucket_at+b,images_per_bucket))
         for i in range(b*images_per_bucket,b*images_per_bucket+images_per_bucket):
             destfile = os.path.basename(img_files[i])
             copyfile(img_files[i], os.path.join(bucket_dir,destfile))
