@@ -28,6 +28,7 @@ def save_fixation_cross(rootdir,image_width,image_height):
     d.text((image_width/2.0 - font_size, image_height/2.0 - font_size), '+', text_color, font)
     filename = 'fixation-cross.jpg'
     img.save(os.path.join(rootdir,filename))
+    print('Saved fixation cross image as %s'%(os.path.join(rootdir,filename)))
 
 if __name__ == "__main__":
     

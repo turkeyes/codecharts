@@ -12,6 +12,7 @@ def create_codecharts(real_CC_dir,ncodecharts,image_width,image_height):
 
     data = {}
     data_with_coords = {}
+    print('Generating %d codecharts...'%(ncodecharts))
     for img_num in range(ncodecharts):
         if img_num%100==0:
             print('%d/%d'%(img_num,ncodecharts))
@@ -22,9 +23,13 @@ def create_codecharts(real_CC_dir,ncodecharts,image_width,image_height):
 
     with open(os.path.join(real_CC_dir,'CC_codes.json'), 'w') as outfile: 
         json.dump(data, outfile)
+    print('Writing out %s'%(os.path.join(real_CC_dir,'CC_codes.json')))
 
     with open(os.path.join(real_CC_dir,'CC_codes_full.json'), 'w') as outfile: 
         json.dump(data_with_coords, outfile)
+    print('Writing out %s'%(os.path.join(real_CC_dir,'CC_codes_full.json')))
+        
+    print('Done!')
     
 if __name__ == "__main__":
     
