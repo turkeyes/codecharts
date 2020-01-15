@@ -25,7 +25,10 @@ Using the interface for your own data collection requires two steps: 1) generati
 
 ### Generating input data
 
-The iPython notebook found at [generate-experiment-files/main.ipynb](https://github.com/turkeyes/codecharts/blob/master/generate-experiment-files/main.ipynb) should walk you step-by-step through generating all the experimental files required to run the CodeCharts interface with a new set of images. You will provide the path to the directory hosting these images and be able to further customize the experimental design (choosing the tutorial and sentinel images, the experiment length, and the number of subject files to generate). The code will output all the files to [assets/task_data](https://github.com/turkeyes/codecharts/tree/master/assets/task_data), and you can test the interface with the new images by repeating step 2 (from "Getting started"). Each time the page is refereshed, a new subject file will be preloaded. 
+The iPython notebook at [generate-experiment-files/main.ipynb](https://github.com/turkeyes/codecharts/blob/master/generate-experiment-files/main.ipynb) will walk you step-by-step through generating the experiment files required to run the interface with a new set of images. You will:
+- provide a directory of images on which you wish to collect attention data
+- customize the experimental design by choosing tutorial and sentinel images, the experiment length, and the number of subject files to generate 
+- output your experiment files to [assets/task_data](https://github.com/turkeyes/codecharts/tree/master/assets/task_data). Once this is done, you can test your experiment by repeating step 2 (from "Getting started").
 
 ### Configuring the webpage
 
@@ -34,10 +37,10 @@ Configure the interface to your needs as follows:
 1. Open the file `assets/js/custom.js`. This is the principal JavaScript file responsable for the interface logic. At the top of the file there is a section labeled "UI Parameters" that contains configurable parameters that change how the task runs. Change the variables `N_BUCKETS` and `N_SUBJ_FILES` to match the number of buckets and subject files, respectively, that you generated above. To make sure the JavaScript can find your input data, either ensure that your data is in the file `assets/task_data` or change the variables `DATA_BASE_PATH` and `IMAGE_BASE_PATH`. 
 2. Change the variables `NUM_MSEC_CROSS`, `NUM_MSEC_IMAGE`, `NUM_MSEC_SENTINEL`, and `NUM_MSEC_CHAR` to change how long the fixation cross, target images, sentinel images, and codecharts are shown to the participant. Adjust any other variables in the "UI Parameters" section that you desire.
 3. Edit the file `config.json` to customize the task title, instructions, and disclaimer. You can also set the boolean `advanced.includeDemographicSurvey` to include a demographic survey at the end of the task, and you can set `advanced.hideIfNotAccepted` to block continuing with the task if it is on MTurk and the worker has not accepted the task. 
-4. Decide how you want to host the collected task data.
-  * Configure a back-end to store your data. The interface works out-of-the-box as an MTurk `ExternalQuestion`. Please see https://github.com/a-newman/mturk-api-notebook for an example of how to deploy the task on MTurk once all the experimental files have been hosted on a public webpage. 
-  * If you are not using MTurk and/or you want to use your own back-end to store data, set the variable `advanced.externalSubmit` in `config.json` to `true` and change `externalSubmitUrl` to the url that you would like to `POST` data to instead. With this configuration, the interface will expect a json response of the form `{"key": <submit_code>}`. The submit code will be shown to the user on completion. 
-  * Alternatively, the https://github.com/turkeyes/codecharts/tree/print_data branch of this repository contains a version that downloads the collected data from the task to a local file. You can use this to test your task before launching it with a back-end, or you can use this as-is to collect data with local participants.
+4. Decide how you want to store the collected task data. 
+  * **Option 1: use MTurk.** This code base works out-of-the-box as an MTurk `ExternalQuestion`. Post this repository with your generated task data to a public url and point your MTurk task to that url. (For an example of how to launch a HIT on MTurk, see [this example MTurk notebook](https://github.com/a-newman/mturk-template/blob/master/mturk/mturk.ipynb).)
+  * **Option 2: set up your own data storage.** You can configure the interface to post the collected data to an API endpoint of your choice. The API should save the posted data and return a unique key that can be used to identify the data submitted. More specifically, the url should save JSON data submitted via a `POST` request and return a JSON response of the form `{"key": <submission_code>}`. The submission code will be displayed to the user as proof of task completion (for instance, so that the user can enter the submission code back to an MTurk task). 
+  * Alternatively, the [`print_data`](https://github.com/turkeyes/codecharts/tree/print_data) branch of this repository contains a version that downloads the data directly to a local file. You can use this to test your task before launching it with a back-end, or you can use this as-is to collect data with local participants.
 
 ## Table of Contents
 
@@ -47,3 +50,5 @@ Configure the interface to your needs as follows:
     * `js/custom.js`: JS file containing all task-specific logic. Most changes you make to the interface should involve this file. 
     * `js/main.js`: generic file handling task flow, data submission, etc. Does not contain task-specific logic. 
     * `task_data`: default folder for storing task input data.
+* `generate-experiment-files/`: contains Python code for generating the data required to run the experiment (including the codecharts themselves) 
+    * `main.ipynb`: a Jupyter notebook that walks you through the steps of generating the task data. 
