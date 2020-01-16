@@ -46,7 +46,7 @@ def save_padded_images(real_image_dir,allfiles,toplot=False,maxwidth=None,maxhei
         if to_resize:
             #resize image to fixed dimensions
             width, height = im.size
-            ratio = min(MAX_W/width, MAX_H/height)
+            ratio = min(maxwidth/width, maxheight/height)
             newwidth = int(width*ratio)
             newheight = int(height*ratio)
             im = im.resize((newwidth,newheight), Image.ANTIALIAS)
