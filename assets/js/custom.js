@@ -212,6 +212,7 @@ var custom = {
       SCORES.SENTINEL_TOTAL += 1;
       var codeEntered = taskOutput[taskIndex].rememberedCode;
       var correctCodes = taskInput[taskIndex].correct_codes;
+      if (!correctCodes) throw new Error("Correct codes were not provided in the subject file!");
       var gotSentinel = _includes(correctCodes, codeEntered);
       SCORES.SENTINEL_CORRECT += gotSentinel;
       correctTrial = gotSentinel;
