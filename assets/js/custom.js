@@ -14,8 +14,8 @@ const PARAMS = {
   N_BUCKETS: 1,
   N_SUBJ_FILES: 3,
 
-  MAX_INVALID_ALLOWED_TUTORIAL: 3,
-  MAX_INCORRECT_SENTINELS_ALLOWED_TUTORIAL: 3,
+  MAX_INVALID_ALLOWED_TUTORIAL: 1,
+  MAX_INCORRECT_SENTINELS_ALLOWED_TUTORIAL: 0,
 
   GIVE_FEEDBACK: false, // should feedback be given during the tutorial
   NUM_MSEC_FEEDBACK: 2000, // how long does the feedback stay on the screen
