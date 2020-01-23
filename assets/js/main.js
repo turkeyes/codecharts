@@ -20,7 +20,6 @@ function saveTaskData() {
     if (config.meta.aggregate) {
         $.extend(state.taskOutputs, data);
     } else {
-        // TODO: figure out how best to include the demo survey data in the results? 
         state.taskOutputs[state.taskIndex] = data;
     }
 }

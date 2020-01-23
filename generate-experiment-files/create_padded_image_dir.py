@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 MAX_H = 1340 #1920 1920 resized to 1000, max height can be 700 so 700x(1920/1000)
 MAX_W = 1920 
 to_resize = True
+todebug = False
 
 def get_max_dims(allfiles):
 
@@ -19,8 +20,9 @@ def get_max_dims(allfiles):
         widths.append(width)
         heights.append(height)
 
-    #print("Image widths:",Counter(widths).keys())
-    #print("Image heights:",Counter(heights).keys())
+    if todebug:
+        print("Image widths:",Counter(widths).keys())
+        print("Image heights:",Counter(heights).keys())
 
     maxwidth = max(list(Counter(widths).keys()))
     maxheight = max(list(Counter(heights).keys()))
@@ -46,9 +48,10 @@ def save_padded_images(real_image_dir,allfiles,toplot=False,maxwidth=None,maxhei
         if to_resize:
             #resize image to fixed dimensions
             width, height = im.size
-            ratio = min(MAX_W/width, MAX_H/height)
+            ratio = min(maxwidth/width, maxheight/height)
             newwidth = int(width*ratio)
             newheight = int(height*ratio)
+            if todebug: print('resizing %dx%d to %dx%d (ratio=%2.2f)'%(width,height,newwidth,newheight,ratio))
             im = im.resize((newwidth,newheight), Image.ANTIALIAS)
         
         width, height = im.size
