@@ -17,7 +17,7 @@ const PARAMS = {
   MAX_INVALID_ALLOWED_TUTORIAL: 1,
   MAX_INCORRECT_SENTINELS_ALLOWED_TUTORIAL: 0,
 
-  GIVE_FEEDBACK: false, // should feedback be given during the tutorial
+  GIVE_FEEDBACK: true, // should feedback be given during the tutorial
   NUM_MSEC_FEEDBACK: 2000, // how long does the feedback stay on the screen
 }
 
@@ -223,6 +223,7 @@ var custom = {
     }
     MESSAGE = correctTrial ? POSITIVE_MESSAGE : NEGATIVE_MESSAGE;
     MESSAGE_IS_POSITIVE = correctTrial;
+    console.log('Invalid scores answered so far:',SCORES.INVALID);
 
     return false; // we'll allow the task to continue either way but we'll remember if an invalid code was entered
   },

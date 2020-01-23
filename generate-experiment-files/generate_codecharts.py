@@ -14,6 +14,7 @@ text_color = ImageColor.getrgb("gray")
 font_type = "Arial.ttf"
 tojitter = True # add jitter from a regular grid
 ebuf = 5 # buffer number of pixels to leave from the edges of the image so codecharts are not tangent to image edges
+go_to_image_edges = False # if want to make sure to sample triplets to the very edge of the image (downside: triplets may be more crowded)
 
 def point_to_pixel(num): 
     return int(num*px_pt_ratio)
@@ -73,8 +74,25 @@ def create_codechart(filename,image_width,image_height):
     valid_codes = set()
     coordinates = {}
     
-    for x in range(ebuf, image_width-max_triplet_width-ebuf, d_h): # regularly sample the image horizontally
-        for y in range(ebuf, image_height-max_triplet_height-ebuf, d_v): # regularly sample the image vertically
+    # initialize starting locations for triplets on the image grid
+    x_init = ebuf
+    y_init = ebuf
+    
+    # -------- improvement made after 01/2020 (after TurkEyes paper) --------
+    # original problem was grid-like artifacts in the collected data because the grid spacing between consecutive triplets
+    # was always similar (despite a small bit of jitter added when using the triplet)
+    xoffset = random.choice(list(range(int(d_h/2.0))))
+    yoffset = random.choice(list(range(int(d_v/2.0))))
+    x_init = x_init+xoffset
+    y_init = y_init+yoffset
+    # -----------------------------------------------------------------------
+
+    x = x_init
+    while x < image_width-max_triplet_width-ebuf: 
+        
+        y = y_init
+        while y < image_height-max_triplet_height-ebuf: 
+            
             triplet_code = generate_rand_triplet()
             
             # check for if triplet has already been used in image since all codes should be unique
@@ -93,13 +111,28 @@ def create_codechart(filename,image_width,image_height):
                 j_x = random.choice(x_range)
                 j_y = random.choice(y_range)
             else:
-                j_x = x
+                j_x = x 
                 j_y = y
 
             # writes triplet to image 
             d.text((j_x, j_y), triplet_code, text_color, font)
             coordinates[triplet_code] = (j_x, j_y)
             
+            y_prev = y
+            y = y+d_v # regularly sample the image vertically
+            
+            # triplets are not guaranteed to go to edge of image, and gap could be large
+            # see if can still squeeze in a triplet without overlapping previous ones (could still be quite close)
+            if go_to_image_edges and y >= image_height-max_triplet_height-ebuf:
+                y = y_prev + max_triplet_height+j_v+1 + post_jitter_buffer*2
+
+        x_prev = x
+        x = x+d_h # regularly sample the image horizontally
+        
+        if go_to_image_edges and x >= image_width-max_triplet_width-ebuf: 
+            x = x_prev + max_triplet_width+j_h+1 + post_jitter_buffer*2
+    
+  
     img.save(filename)
     return (list(valid_codes), coordinates)
 
